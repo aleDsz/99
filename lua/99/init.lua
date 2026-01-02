@@ -236,6 +236,22 @@ function _99.setup(opts)
 
     Logger:configure(opts.logger)
 
+    vim.api.nvim_create_user_command("NNInfo", function()
+        _99.info()
+    end, { desc = "Shows info" })
+
+    vim.api.nvim_create_user_command("NNVisual", function()
+        _99.visual()
+    end, { desc = "Open visual" })
+
+    vim.api.nvim_create_user_command("NNVisualPrompt", function()
+        _99.visual_prompt()
+    end, { desc = "Open visual prompt" })
+
+    vim.api.nvim_create_user_command("NNFillInFunction", function()
+        _99.fill_in_function()
+    end, { desc = "Fill in Function" })
+
     if opts.model then
         assert(type(opts.model) == "string", "opts.model is not a string")
         _99_state.model = opts.model
