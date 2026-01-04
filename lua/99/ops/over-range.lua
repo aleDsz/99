@@ -5,6 +5,7 @@ local geo = require("99.geo")
 local Range = geo.Range
 local Point = geo.Point
 local make_clean_up = require("99.ops.clean-up")
+local Utils = require("99.utils")
 
 --- @param context _99.RequestContext
 --- @param range _99.Range
@@ -83,9 +84,12 @@ local function over_range(context, range, prompt)
                 new_range:replace_text(lines)
             end
         end,
-        on_stdout = function(line)
+        on_stdout = function(output)
             if display_ai_status then
-                top_status:push(line)
+                local lines = Utils.wrap_output(output)
+                for _, line in ipairs(lines) do
+                    top_status:push(line)
+                end
             end
         end,
         on_stderr = function(line)

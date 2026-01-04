@@ -6,6 +6,7 @@ local editor = require("99.editor")
 local RequestStatus = require("99.ops.request_status")
 local Window = require("99.window")
 local make_clean_up = require("99.ops.clean-up")
+local Utils = require("99.utils")
 
 --- @param context _99.RequestContext
 --- @param res string
@@ -80,8 +81,11 @@ local function fill_in_function(context, additional_prompt)
     end)
 
     request:start({
-        on_stdout = function(line)
-            request_status:push(line)
+        on_stdout = function(output)
+            local lines = Utils.wrap_output(output)
+            for _, line in ipairs(lines) do
+                request_status:push(line)
+            end
         end,
         on_complete = function(status, response)
             logger:info("on_complete", "status", status, "response", response)
