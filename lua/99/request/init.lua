@@ -61,7 +61,7 @@ function OpenCodeProvider:make_request(query, request, observer)
                 if err and err ~= "" then
                     logger:debug("stdout#error", "err", err)
                 end
-                if not err then
+                if data and not err then
                     observer.on_stdout(data)
                 end
             end),
@@ -74,7 +74,7 @@ function OpenCodeProvider:make_request(query, request, observer)
                 if err and err ~= "" then
                     logger:debug("stderr#error", "err", err)
                 end
-                if not err then
+                if data and not err then
                     observer.on_stderr(data)
                 end
             end),
