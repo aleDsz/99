@@ -71,6 +71,19 @@ function OpenCodeProvider:make_request(query, request, observer)
                     once_complete("cancelled", "")
                     return
                 end
+                -- Since opencode cli doesn't return an exit code when it
+                -- throws an exception, we must rely on regex matching to
+                -- know what's going on.
+                -- TODO: make it return an exit code, perhaps contribute to opencode?
+                -- actually, does it happen with Arch or only with Nix?
+                if data and string.find(data, "ProviderModelNotFoundError") then
+                    once_complete(
+                        "failed",
+                        "expected a valid provider model, got "
+                            .. request.context.model
+                    )
+                    return
+                end
                 if err and err ~= "" then
                     logger:debug("stderr#error", "err", err)
                 end
