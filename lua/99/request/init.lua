@@ -125,7 +125,12 @@ function OpenCodeProvider._retrieve_response(request)
   end
 
   local str = table.concat(result, "\n")
-  logger:debug("retrieve_results", "results", str)
+  logger:debug("retrieve_results", "result", result, "str", str)
+
+  if str == "" then
+    logger:error("retrieve_results: empty result", "tmp_name", tmp)
+    return false, ""
+  end
 
   return true, str
 end
