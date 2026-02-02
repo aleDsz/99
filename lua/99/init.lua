@@ -467,20 +467,20 @@ function _99.setup(opts)
     _99.info()
   end, { desc = "Shows info" })
 
-  vim.api.nvim_create_user_command("NNVisual", function()
-    _99.visual()
-  end, { desc = "Open visual" })
+  vim.api.nvim_create_user_command("NNShowLogs", function()
+    _99.view_logs()
+  end, { desc = "Shows logs" })
 
   vim.api.nvim_create_user_command("NNVisualPrompt", function()
     _99.visual_prompt({})
   end, { desc = "Open visual prompt" })
 
   vim.api.nvim_create_user_command("NNFillInFunction", function()
-    _99.fill_in_function()
+    _99.fill_in_function({})
   end, { desc = "Fill in function" })
 
   vim.api.nvim_create_user_command("NNFillInFunctionInPrompt", function()
-    _99.fill_in_function_prompt()
+    _99.fill_in_function_prompt({})
   end, { desc = "Fill in function in prompt" })
 
   vim.api.nvim_create_user_command("NNStopAllRequests", function()
