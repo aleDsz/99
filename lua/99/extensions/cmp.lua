@@ -61,23 +61,13 @@ end
 --- @field isIncomplete boolean -
 -- true: I might return more if user types more
 -- false: this result set is complete
-function CmpSource:complete(params, callback)
-  local before = params.context.cursor_before_line or ""
+function CmpSource:complete(_, callback)
   local items = {} --[[ @as CompletionItem[] ]]
-
-  if #before > 1 and before:sub(#before - 1) ~= " @" then
-    callback({
-      items = {},
-      isIncomplete = false,
-    })
-    return
-  end
-
   for _, item in ipairs(self.items) do
     table.insert(items, {
       label = item.rule.name,
-      insertText = item.rule.path,
-      filterText = item.rule.name,
+      insertText = item.rule.name,
+      filterText = "@" .. item.rule.name,
       kind = 17, -- file
       documentation = {
         kind = "markdown",
@@ -91,15 +81,6 @@ function CmpSource:complete(params, callback)
     items = items,
     isIncomplete = false,
   })
-end
-
---- TODO: Look into what this could be
-function CmpSource.resolve(completion_item, callback)
-  callback(completion_item)
-end
-
-function CmpSource.execute(completion_item, callback)
-  callback(completion_item)
 end
 
 --- @type CmpSource | nil
@@ -132,7 +113,6 @@ local function init(_99)
 
   local cmp = require("cmp")
   source = CmpSource.new(_99)
-  source.items = rules(_99)
   cmp.register_source(SOURCE, source)
 end
 
